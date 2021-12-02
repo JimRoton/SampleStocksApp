@@ -57,7 +57,7 @@ namespace SearchApi.Services
             if (response.quoteResponse.HasResponses())
                 return new Stock(){
                     Name = response.quoteResponse.result[0].shortName,
-                    Symbol = response.quoteResponse.result[0].symbol,z
+                    Symbol = response.quoteResponse.result[0].symbol,
                     Price = response.quoteResponse.result[0].regularMarketPrice,
                     Date = DateTime.Now,
                     Source = "YAHOO"

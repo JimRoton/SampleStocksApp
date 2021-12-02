@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using LoadApi.Interfaces;
 
 namespace LoadApi.Controllers
 {
@@ -13,19 +14,31 @@ namespace LoadApi.Controllers
     {
         private readonly ILogger<LoadController> _logger;
 
-        public LoadController(ILogger<LoadController> logger)
+        private readonly IDbService _dbService;
+
+        public LoadController(ILogger<LoadController> logger, IDbService dbService)
         {
             _logger = logger;
+            _dbService = dbService;
         }
 
         [HttpGet]
-        public IEnumerable<String> Get()
+        public IActionResult Get()
         {
-            return new String[]{
-                "MSFT",
-                "APPL",
-                "BBY"
-            };
+            try
+            {
+                string[] symbols = _dbService.Load();
+
+                return symbols != null ? Ok(_dbService.Load()) : NoContent();
+            }
+            catch(Exception ex)
+            {
+                // log exceptions
+                _logger.LogError(ex.Message, ex);
+
+                // return 
+                return StatusCode(500);
+            }
         }
     }
 }

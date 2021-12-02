@@ -12,11 +12,6 @@ namespace StocksApi.Controllers
     [Route("[controller]")]
     public class StocksApi : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<StocksApi> _logger;
 
         public StocksApi(ILogger<StocksApi> logger)
@@ -25,9 +20,34 @@ namespace StocksApi.Controllers
         }
 
         [HttpGet("{symbol}")]
-        public Stock Get()
+        public Stock Search()
         {
             return new Stock();
         }
+
+        [HttpGet]
+        public Stock[] Load()
+        {
+            return new Stock[]{
+                new Stock(){
+                    Name = "Microsoft",
+                    Symbol = "MSFT",
+                    Price = 1.00,
+                    Source = "REDIS"
+                }
+            };
+        }
+
+        [HttpPut("{symbol}")]
+        public void Save(string symbol)
+        {
+
+        }
+
+        [HttpDelete("{symbol}")]
+        public void Delete(string symbol)
+        {
+
+        }   
     }
 }
